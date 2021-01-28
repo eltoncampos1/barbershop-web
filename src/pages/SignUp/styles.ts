@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import SignUp from '../../assets/sign-up.png'
 
+
 export const Container = styled.div`
   height: 100vh;
 
