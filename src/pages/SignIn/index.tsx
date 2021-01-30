@@ -1,66 +1,87 @@
-import React, { useCallback, useRef } from 'react'
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
-import * as Yup from 'yup';
+import React, { useCallback, useContext, useRef } from "react";
+import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
+import * as Yup from "yup";
 
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
-import { Container, Content, Background } from './styles';
+import { Form } from "@unform/web";
+import { FormHandles } from "@unform/core";
 
-import logoImg from '../../assets/logo.svg';
-import { Form } from '@unform/web';
-import { FormHandles } from '@unform/core';
-import getValidationErrors from '../../utils/getValidationErrors';
+import logoImg from "../../assets/logo.svg";
+import getValidationErrors from "../../utils/getValidationErrors";
+import { AuthContext } from "../../context/AuthContext";
+
+import { Container, Content, Background } from "./styles";
+
+interface SignInFormData {
+  email: string;
+  password: string;
+}
 
 const SignIn: React.FC = () => {
-    const formRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null);
 
-    const handleSubmit = useCallback(async(data:object) => {
+  const { signIn, user } = useContext(AuthContext);
 
-        try {
-            formRef.current?.setErrors({});
-            
-            const schema = Yup.object().shape({
-                email: Yup.string().required(`E-mail obrigatório`).email(`Digite um email válido`),
-                password: Yup.string().required(`Senha obrigatória`),
-            })
+  const handleSubmit = useCallback(
+    async (data: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-            await schema.validate(data, {
-                abortEarly: false,
-            });
+        const schema = Yup.object().shape({
+          email: Yup.string()
+            .required(`E-mail obrigatório`)
+            .email(`Digite um email válido`),
+          password: Yup.string().required(`Senha obrigatória`),
+        });
 
-           
-        } catch (err) {
-            const errors = getValidationErrors(err)
-            
-            formRef.current?.setErrors(errors)          
-        }    
-    },[])
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-    return (
-        <Container>
-        <Content>
-            <img src={logoImg} alt="Gobarber"/>
+        signIn({
+          email: data.email,
+          password: data.password,
+        });
+      } catch (err) {
+        const errors = getValidationErrors(err);
 
-            <Form ref={formRef} onSubmit={handleSubmit}>
-                <h1>Faça seu logon</h1>
+        formRef.current?.setErrors(errors);
+      }
+    },
+    [signIn]
+  );
 
-                <Input icon={FiMail} name="email" placeholder="E-mail" />
-                <Input icon={FiLock} name="password" placeholder="Senha" type="password" />
+  return (
+    <Container>
+      <Content>
+        <img src={logoImg} alt="Gobarber" />
 
-                <Button type="submit">Entrar</Button>
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <h1>Faça seu logon</h1>
 
-                <a href="forgot">Esqueci minha senha</a>
-            </Form>
+          <Input icon={FiMail} name="email" placeholder="E-mail" />
+          <Input
+            icon={FiLock}
+            name="password"
+            placeholder="Senha"
+            type="password"
+          />
 
-            <a href="login">
-                    <FiLogIn />
-                Criar conta
-            </a>
-        </Content>
-        <Background />
+          <Button type="submit">Entrar</Button>
+
+          <a href="forgot">Esqueci minha senha</a>
+        </Form>
+
+        <a href="login">
+          <FiLogIn />
+          Criar conta
+        </a>
+      </Content>
+      <Background />
     </Container>
-    )
-}
+  );
+};
 
 export default SignIn;
