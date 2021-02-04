@@ -1,67 +1,74 @@
-import React, { useCallback, useRef } from 'react'
-import { FiMail, FiLock, FiUser, FiArrowLeft } from 'react-icons/fi';
-import { Form } from '@unform/web';
-import * as Yup from 'yup';
+import React, { useCallback, useRef } from "react";
+import { FiMail, FiLock, FiUser, FiArrowLeft } from "react-icons/fi";
+import { Form } from "@unform/web";
+import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
-import { Container, Content, Background } from './styles';
+import { Container, Content, Background, AnimationContainer } from "./styles";
 
-import logoImg from '../../assets/logo.svg';
-import { FormHandles } from '@unform/core';
-import getValidationErrors from '../../utils/getValidationErrors';
+import logoImg from "../../assets/logo.svg";
+import { FormHandles } from "@unform/core";
+import getValidationErrors from "../../utils/getValidationErrors";
 
 const SignUp: React.FC = () => {
-    const formRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null);
 
-    const handleSubmit = useCallback(async(data:object) => {
-        try {
-            formRef.current?.setErrors({});
-            
-            const schema = Yup.object().shape({
-                name: Yup.string().required(`Nome obrigatório`),
-                email: Yup.string().required(`E-mail obrigatório`).email(`Digite um email válido`),
-                password: Yup.string().min(6, `No minimo 6 dígitos`),
-            })
+  const handleSubmit = useCallback(async (data: object) => {
+    try {
+      formRef.current?.setErrors({});
 
-            await schema.validate(data, {
-                abortEarly: false,
-            });
+      const schema = Yup.object().shape({
+        name: Yup.string().required(`Nome obrigatório`),
+        email: Yup.string()
+          .required(`E-mail obrigatório`)
+          .email(`Digite um email válido`),
+        password: Yup.string().min(6, `No minimo 6 dígitos`),
+      });
 
-           
-        } catch (err) {
-            const errors = getValidationErrors(err)
-            
-            formRef.current?.setErrors(errors)          
-        }    
-    },[])
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+    } catch (err) {
+      const errors = getValidationErrors(err);
 
-    return (
-        <Container>
-            <Background />
+      formRef.current?.setErrors(errors);
+    }
+  }, []);
 
-            <Content>
-                <img src={logoImg} alt="Gobarber"/>
+  return (
+    <Container>
+      <Background />
 
-                <Form ref={formRef} onSubmit={handleSubmit}>
-                    <h1>Faça seu cadastro</h1>
+      <Content>
+        <AnimationContainer>
+          <img src={logoImg} alt="Gobarber" />
 
-                    <Input icon={FiUser} name="name" placeholder="Nome" />
-                    <Input icon={FiMail} name="email" placeholder="E-mail" />
-                    <Input icon={FiLock} name="password" placeholder="Senha" type="text" />
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu cadastro</h1>
 
-                    <Button type="submit">Cadastrar</Button>
+            <Input icon={FiUser} name="name" placeholder="Nome" />
+            <Input icon={FiMail} name="email" placeholder="E-mail" />
+            <Input
+              icon={FiLock}
+              name="password"
+              placeholder="Senha"
+              type="text"
+            />
 
-                </Form>
+            <Button type="submit">Cadastrar</Button>
+          </Form>
 
-                <a href="login">
-                    <FiArrowLeft />
-                    voltar para logon
-                </a>
-            </Content>
-        </Container>
-    )
-}
+          <Link to="/">
+            <FiArrowLeft />
+            voltar para logon
+          </Link>
+        </AnimationContainer>
+      </Content>
+    </Container>
+  );
+};
 
 export default SignUp;
