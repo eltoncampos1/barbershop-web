@@ -1,5 +1,13 @@
 import React from "react";
-import { Container, Header, HeaderContent, Profile } from "./styles";
+import {
+  Container,
+  Header,
+  HeaderContent,
+  Profile,
+  Content,
+  Schedule,
+  Calendar,
+} from "./styles";
 
 import logoImg from "../../assets/logo.svg";
 import { FiPower } from "react-icons/fi";
@@ -27,6 +35,11 @@ const Dashboard: React.FC = () => {
           </button>
         </HeaderContent>
       </Header>
+
+      <Content>
+        <Schedule></Schedule>
+        <Calendar></Calendar>
+      </Content>
     </Container>
   );
 };
