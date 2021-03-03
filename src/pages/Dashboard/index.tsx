@@ -8,6 +8,8 @@ import {
   Schedule,
   Calendar,
   NextAppointment,
+  Section,
+  Appointment,
 } from "./styles";
 
 import logoImg from "../../assets/logo.svg";
@@ -60,6 +62,74 @@ const Dashboard: React.FC = () => {
               </span>
             </div>
           </NextAppointment>
+
+          <Section>
+            <strong>Morning</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/56568406?s=460&u=6341df1b4aadb55298fca931b7c88d957896f2c8&v=4"
+                  alt="Elton campos"
+                />
+                <strong>Elton de Campos</strong>
+              </div>
+            </Appointment>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/56568406?s=460&u=6341df1b4aadb55298fca931b7c88d957896f2c8&v=4"
+                  alt="Elton campos"
+                />
+                <strong>Elton de Campos</strong>
+              </div>
+            </Appointment>
+          </Section>
+
+          <Section>
+            <strong>Evening</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/56568406?s=460&u=6341df1b4aadb55298fca931b7c88d957896f2c8&v=4"
+                  alt="Elton campos"
+                />
+                <strong>Elton de Campos</strong>
+              </div>
+            </Appointment>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img
+                  src="https://avatars.githubusercontent.com/u/56568406?s=460&u=6341df1b4aadb55298fca931b7c88d957896f2c8&v=4"
+                  alt="Elton campos"
+                />
+                <strong>Elton de Campos</strong>
+              </div>
+            </Appointment>
+          </Section>
         </Schedule>
         <Calendar></Calendar>
       </Content>
