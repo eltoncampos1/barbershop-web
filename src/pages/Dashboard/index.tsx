@@ -7,10 +7,11 @@ import {
   Content,
   Schedule,
   Calendar,
+  NextAppointment,
 } from "./styles";
 
 import logoImg from "../../assets/logo.svg";
-import { FiPower } from "react-icons/fi";
+import { FiClock, FiPower } from "react-icons/fi";
 import { useAuth } from "../../hooks/auth";
 
 const Dashboard: React.FC = () => {
@@ -37,7 +38,29 @@ const Dashboard: React.FC = () => {
       </Header>
 
       <Content>
-        <Schedule></Schedule>
+        <Schedule>
+          <h1>scheduled times</h1>
+          <p>
+            <span>Today</span>
+            <span>Day 06</span>
+            <span>Monday</span>
+          </p>
+
+          <NextAppointment>
+            <strong>Next Appointment</strong>
+            <div>
+              <img
+                src="https://avatars.githubusercontent.com/u/56568406?s=460&u=6341df1b4aadb55298fca931b7c88d957896f2c8&v=4"
+                alt="Elton campos"
+              />
+              <strong>Elton de Campos</strong>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+            </div>
+          </NextAppointment>
+        </Schedule>
         <Calendar></Calendar>
       </Content>
     </Container>
