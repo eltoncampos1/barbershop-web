@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { isToday, format } from "date-fns";
+import enIN from "date-fns/locale/en-IN";
 import Daypicker, { DayModifiers } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import {
@@ -18,6 +20,7 @@ import logoImg from "../../assets/logo.svg";
 import { FiClock, FiPower } from "react-icons/fi";
 import { useAuth } from "../../hooks/auth";
 import api from "../../services/api";
+import { spawn } from "child_process";
 
 interface MonthAvailabilityItem {
   day: number;
@@ -67,6 +70,18 @@ const Dashboard: React.FC = () => {
     return dates;
   }, [currentMonth, monthAvailability]);
 
+  const selectedDateAsText = useMemo(() => {
+    return format(selectedDate, "'Day' dd 'of' MMMM", {
+      locale: enIN,
+    });
+  }, [selectedDate]);
+
+  const selectedWeekDay = useMemo(() => {
+    return format(selectedDate, "cccc", {
+      locale: enIN,
+    });
+  }, [selectedDate]);
+
   return (
     <Container>
       <Header>
@@ -76,7 +91,7 @@ const Dashboard: React.FC = () => {
           <Profile>
             <img src={user.avatar_url} alt={user.name} />
             <div>
-              <span>Bem-vindo,</span>
+              <span>Welcome,</span>
               <strong>{user.name}</strong>
             </div>
           </Profile>
@@ -91,9 +106,9 @@ const Dashboard: React.FC = () => {
         <Schedule>
           <h1>scheduled times</h1>
           <p>
-            <span>Today</span>
-            <span>Day 06</span>
-            <span>Monday</span>
+            {isToday(selectedDate) && <span>Today</span>}
+            <span>{selectedDateAsText}</span>
+            <span>{selectedWeekDay}</span>
           </p>
 
           <NextAppointment>
