@@ -147,6 +147,23 @@ export const NextAppointment = styled.div`
   
 `;
 
+export const Section = styled.div`
+    margin-top: 48px;
+
+    strong {
+        color: #999591;
+        font-size: 20px;
+        line-height: 26px;
+        border-bottom: 1px solid #3e3b47;
+        display: block;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+`;
+
+export const Appointment = styled.div`
+    
+`;
 
 export const Calendar = styled.aside`
     width: 380px;
