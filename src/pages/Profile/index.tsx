@@ -19,7 +19,9 @@ import { useAuth } from "../../hooks/auth";
 interface ProfileFormData {
   name: string;
   email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
@@ -34,11 +36,16 @@ const Profile: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required(`Nome obrigatório`),
+          name: Yup.string().required(`Name Required`),
           email: Yup.string()
-            .required(`E-mail obrigatório`)
-            .email(`Digite um email válido`),
-          password: Yup.string().min(6, `No minimo 6 dígitos`),
+            .required(`E-mail Required`)
+            .email(`Enter a valid email address`),
+          old_password: Yup.string(),
+          password: Yup.string().min(6, `At least 6 digits`),
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref("password"), null],
+            "Incorrect confirmation"
+          ),
         });
 
         await schema.validate(data, {
@@ -51,8 +58,8 @@ const Profile: React.FC = () => {
 
         addToast({
           type: "success",
-          title: "Cadastro realizado!",
-          description: "VocÊ já pode fazer seu logon no GoBarber!",
+          title: "Registration completed!",
+          description: "You can now log on to GoBarber!",
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -65,8 +72,8 @@ const Profile: React.FC = () => {
 
         addToast({
           type: "error",
-          title: "Erro no cadastro",
-          description: "Ocorreu um erro ao fazer o cadastro, tente novamente",
+          title: "Registration error",
+          description: "An error occurred while registering, please try again",
         });
       }
     },
