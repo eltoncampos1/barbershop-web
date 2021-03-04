@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import { FiMail, FiLock, FiUser } from "react-icons/fi";
+import { FiMail, FiLock, FiUser, FiCamera } from "react-icons/fi";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
@@ -9,7 +9,7 @@ import api from "../../services/api";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
-import { Container, Content } from "./styles";
+import { Container, Content, AvatarInput } from "./styles";
 
 import { FormHandles } from "@unform/core";
 import getValidationErrors from "../../utils/getValidationErrors";
@@ -77,9 +77,14 @@ const Profile: React.FC = () => {
     <Container>
       <Content>
         <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>My Profile</h1>
+          <AvatarInput>
+            <img src={user.avatar_url} alt={user.name} />
+            <button type="button">
+              <FiCamera />
+            </button>
+          </AvatarInput>
 
-          <img src={user.avatar_url} alt={user.name} />
+          <h1>My Profile</h1>
 
           <Input icon={FiUser} name="name" placeholder="Name" />
           <Input icon={FiMail} name="email" placeholder="E-mail" />
