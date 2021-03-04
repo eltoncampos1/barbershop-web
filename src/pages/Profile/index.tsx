@@ -14,6 +14,7 @@ import { Container, Content } from "./styles";
 import { FormHandles } from "@unform/core";
 import getValidationErrors from "../../utils/getValidationErrors";
 import { useToast } from "../../hooks/toast";
+import { useAuth } from "../../hooks/auth";
 
 interface ProfileFormData {
   name: string;
@@ -26,6 +27,7 @@ const Profile: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
+  const { user } = useAuth();
   const handleSubmit = useCallback(
     async (data: ProfileFormData) => {
       try {
@@ -77,9 +79,12 @@ const Profile: React.FC = () => {
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>My Profile</h1>
 
+          <img src={user.avatar_url} alt={user.name} />
+
           <Input icon={FiUser} name="name" placeholder="Name" />
           <Input icon={FiMail} name="email" placeholder="E-mail" />
           <Input
+            containerStyle={{ marginTop: 24 }}
             icon={FiLock}
             name="old_password"
             placeholder="Current password"
