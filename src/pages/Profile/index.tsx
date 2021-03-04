@@ -41,25 +41,55 @@ const Profile: React.FC = () => {
             .required(`E-mail Required`)
             .email(`Enter a valid email address`),
           old_password: Yup.string(),
-          password: Yup.string().min(6, `At least 6 digits`),
-          password_confirmation: Yup.string().oneOf(
-            [Yup.ref("password"), null],
-            "Incorrect confirmation"
-          ),
+          password: Yup.string().when("old_password", {
+            is: (val: string | any[]) => !!val.length,
+            then: Yup.string().required("Required field"),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string()
+            .when("old_password", {
+              is: (val: string | any[]) => !!val.length,
+              then: Yup.string().required("Required field"),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref("password")], "Incorrect confirmation"),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await api.post("/users", data);
+        const {
+          name,
+          email,
+          old_password,
+          password,
+          password_confirmation,
+        } = data;
 
-        history.push("/");
+        const formData = {
+          name,
+          email,
+          ...(old_password
+            ? {
+                old_password,
+                password,
+                password_confirmation,
+              }
+            : {}),
+        };
+
+        const response = await api.put("/profile", formData);
+
+        updateUser(response.data);
+
+        history.push("/dashboard");
 
         addToast({
           type: "success",
-          title: "Registration completed!",
-          description: "You can now log on to GoBarber!",
+          title: "Updated profile!",
+          description:
+            "Your profile information has been updated successfully!",
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -72,8 +102,9 @@ const Profile: React.FC = () => {
 
         addToast({
           type: "error",
-          title: "Registration error",
-          description: "An error occurred while registering, please try again",
+          title: "Update error",
+          description:
+            "An error occurred while updating profile, please try again",
         });
       }
     },
