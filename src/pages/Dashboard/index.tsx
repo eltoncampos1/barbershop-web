@@ -17,6 +17,7 @@ import {
 } from "./styles";
 
 import logoImg from "../../assets/logo.svg";
+import ProfileImg from "../../assets/profileImg.png";
 import { FiClock, FiPower } from "react-icons/fi";
 import { useAuth } from "../../hooks/auth";
 import api from "../../services/api";
@@ -139,7 +140,11 @@ const Dashboard: React.FC = () => {
           <img src={logoImg} alt="GOBarber" />
 
           <Profile>
-            <img src={user.avatar_url} alt={user.name} />
+            {user.avatar_url === null ? (
+              <img src={ProfileImg} alt={user.name} />
+            ) : (
+              <img src={user.avatar_url} alt={user.name} />
+            )}
             <div>
               <span>Welcome,</span>
               <Link to="/profile">

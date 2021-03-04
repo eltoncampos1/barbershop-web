@@ -11,6 +11,8 @@ import Button from "../../components/Button";
 
 import { Container, Content, AvatarInput } from "./styles";
 
+import ProfileImg from "../../assets/profileImg.png";
+
 import { FormHandles } from "@unform/core";
 import getValidationErrors from "../../utils/getValidationErrors";
 import { useToast } from "../../hooks/toast";
@@ -108,7 +110,7 @@ const Profile: React.FC = () => {
         });
       }
     },
-    [addToast, history]
+    [addToast, history, updateUser]
   );
 
   const handleAvatarChange = useCallback(
@@ -147,7 +149,11 @@ const Profile: React.FC = () => {
           onSubmit={handleSubmit}
         >
           <AvatarInput>
-            <img src={user.avatar_url} alt={user.name} />
+            {user.avatar_url === null ? (
+              <img src={ProfileImg} alt={user.name} />
+            ) : (
+              <img src={user.avatar_url} alt={user.name} />
+            )}
             <label htmlFor="avatar">
               <FiCamera />
               <input type="file" id="avatar" onChange={handleAvatarChange} />
